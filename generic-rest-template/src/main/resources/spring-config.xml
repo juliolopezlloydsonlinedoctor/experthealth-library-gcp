@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <bean id="propertiesPlaceholder" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+  </bean>
+
+  <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+  </bean>
+
+  <bean id="restClientPropertiesWithSSL" class="com.experthealth.configuration.RestClientPropertiesDecorator">
+    <constructor-arg name="password" value="drthom123"/>
+    <constructor-arg name="url" value="https://cms-api.prerelease.drthom.com:444/api/v1/pharmacies"/>
+    <constructor-arg name="environmentName" value="MOHC_PREPRODUCTION"/>
+    <constructor-arg name="sslKeyStoreType" value="PKCS12"/>
+    <constructor-arg name="sslEncryptionProtocol" value="TLS"/>
+  </bean>
+
+  <bean id="genericRestClient" class="com.experthealth.client.GenericRestClient">
+    <constructor-arg name="restClientProperties" ref="restClientPropertiesWithSSL"/>
+  </bean>
+
+</beans>

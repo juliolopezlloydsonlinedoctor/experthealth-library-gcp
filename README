@@ -1,0 +1,7 @@
+#!/bin/sh
+#  This is the ExpertHealth Library project for all generic libraries
+
+#  Certificates:
+Colured.p12=green
+Website.drthom.com.p12=preprod
+cms.drthom.com.p12=live

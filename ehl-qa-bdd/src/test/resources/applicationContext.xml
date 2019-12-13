@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+  <context:component-scan base-package="com.experthealth"/>
+
+  <bean id="propertiesPlaceholder" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+  </bean>
+
+  <bean id="customResponseErrorHandler" class="com.experthealth.exceptions.CustomResponseErrorHandler"/>
+  <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+  </bean>
+
+  <bean id="restClientPropertiesWithSSL" class="com.experthealth.configuration.RestClientPropertiesDecorator">
+    <constructor-arg name="password" value="drthom123"/>
+    <constructor-arg name="url" value="https://cms-api.prerelease.drthom.com:444/api/v1/pharmacies"/>
+    <constructor-arg name="environmentName" value="MOHC_PREPRODUCTION"/>
+    <constructor-arg name="sslKeyStoreType" value="PKCS12"/>
+    <constructor-arg name="sslEncryptionProtocol" value="TLS"/>
+    <constructor-arg name="parameters" ref="parameters"/>
+    <constructor-arg name="headers" ref="headers"/>
+
+  </bean>
+
+  <bean id="restClientPropertiesWithInvalidSSLConfiguration" class="com.experthealth.configuration.RestClientPropertiesDecorator">
+    <constructor-arg name="password" value="drthom123_Invalid"/>
+    <constructor-arg name="url" value="http://dt-management-02.experthealth.local:40080/blueprint/json/products/6"/>
+    <constructor-arg name="environmentName" value="LIVE"/>
+    <constructor-arg name="sslKeyStoreType" value="PKCS12_Invalid"/>
+    <constructor-arg name="sslEncryptionProtocol" value="TLS_Invalid"/>
+    <constructor-arg name="parameters" ref="parameters"/>
+    <constructor-arg name="headers" ref="headers"/>
+
+  </bean>
+
+  <bean id="genericRestClientWithSSL" class="com.experthealth.client.GenericRestClient">
+    <constructor-arg name="restClientProperties" ref="restClientPropertiesWithSSL"/>
+  </bean>
+
+  <bean id="genericRestClientWithSSLWithInvalidProperties" class="com.experthealth.client.GenericRestClient">
+    <constructor-arg name="restClientProperties" ref="restClientPropertiesWithInvalidSSLConfiguration"/>
+  </bean>
+
+  <bean id="genericRestServiceWithValidProperties" class="com.experthealth.service.GenericRestService">
+    <constructor-arg name="genericRestClient" ref="genericRestClientWithSSL"/>
+  </bean>
+  <bean id="genericRestServiceWithInvalidProperties" class="com.experthealth.service.GenericRestService">
+    <constructor-arg name="genericRestClient" ref="genericRestClientWithSSLWithInvalidProperties"/>
+  </bean>
+
+  <util:map id="parameters" map-class="java.util.HashMap">
+    <entry key="site" value="lp"/>
+    <entry key="id" value="3"/>
+  </util:map>
+  <util:map id="headers" map-class="java.util.HashMap">
+    <entry key="key1" value="11"/>
+    <entry key="key2" value="22"/>
+    <entry key="key3" value="33"/>
+  </util:map>
+
+
+
+</beans>

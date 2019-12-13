@@ -1,0 +1,8 @@
+
+1.	Removed Spring @value injection requirement on the GenericRestLibrary
+2.	Enable Setters to allow injections via methods
+3.	Hard code property values for the certificates path instead of injection at runtime
+4.	Removed the constructor requirement of having “certUserName” on RestClientPropertiesDecorator – not needed for SSL authentification
+5.	added in certificate for live and switch/fix certificates order
+6.      added in POST, PUT, DELETE
+7.      added in RestTemplate Message Converters
